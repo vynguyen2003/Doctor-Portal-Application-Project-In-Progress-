@@ -5,7 +5,7 @@ The Doctor Portal Application is developed in Java using Jakarta EE APIs. This a
 The project is still in progress, with the Patients and Message pages under development.
 
 # Demo Video:
-Click Issues to access to Demo video link.
+Click 'Issues' beside the 'Code' tab to access to Demo video link.
 
 New User (Registration Process):
 
