@@ -14,4 +14,4 @@ Existing User:
 
     Existing users will have access to a pre-populated database, allowing them to easily manage and manipulate patient data and appointments.
 
-[![Watch the video](/Users/nguyenvy/Downloads/DoctorPortalApplicationProject/Doctor Portal Demo Video.mp4)
+
