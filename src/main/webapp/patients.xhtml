@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://xmlns.jcp.org/jsf/html"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="jakarta.faces.passthrough">
+
+    <h:head>
+        <title>Patients</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet library="css" name="webpages.css" />
+        <!--remember to add font awesome to layout as well since that covers this page-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
+    </h:head>
+
+    <h:body>
+
+        <ui:composition template="templates/layout.xhtml">
+
+            <ui:define name="content">
+
+                <h:form>
+                    <h:inputText id="inputPatientSearch"
+                                 pt:placeholder="Search by Patient Firstname"
+                                 value="#{patientsBean.inputPatientSearch}"
+                                 styleClass="input"
+                                 validatorMessage="Only letters are allowed.">
+                        <f:validateRegex pattern="[a-zA-Z\s]*" />  <!-- only letters and empty string allowed-->
+                        
+                    </h:inputText>
+                  
+                    <h:commandButton action="#{patientsBean.search}" value="Search" styleClass="button sort-button search"/>
+
+                    <br/>
+                    <h:message for="inputPatientSearch" styleClass="errorMessage" />
+                    
+                    <br/>
+                    <h:outputText value="#{patientsBean.errorMessage}" styleClass="errorMessage"/>
+                    
+                </h:form>
+                <h1>All Patients</h1>
+
+                <h:outputText value="You Have No Patient" 
+                              rendered="#{patientsBean.emptyTableRender}" 
+                              styleClass="noAppointment"/>
+
+                <h:form id="dbresults">
+                    <h:dataTable cellpadding="10" border="1" rowClasses="oddRows,evenRows" styleClass="homepageTable"
+                                 value="#{patientsBean.allPatients}" var="patient" 
+                                 rendered="#{!patientsBean.emptyTableRender}">
+                        <h:column>
+                            <f:facet name="header">First Name</f:facet>  
+                            <h:outputText value="#{patient.firstname}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header" >Last Name</f:facet>  
+                            <h:outputText value="#{patient.lastname}" /> 
+                        </h:column>  
+                        <h:column>
+                            <f:facet name="header" >Date Of Birth</f:facet>  
+                            <h:outputText value="#{patient.dateOfBirth}" /> 
+                        </h:column>  
+                          
+                        <h:column>
+                            <f:facet name="header">Select</f:facet>
+                            <h:selectBooleanCheckbox value="#{patient.isChecked}" >
+                                <f:ajax listener="#{patientsBean.updateCheckedStateAtCheckbox(patient)}" render="@form" />
+                            </h:selectBooleanCheckbox>
+                        </h:column>
+                    </h:dataTable>
+
+                    <br/> <br/>
+
+                    <h:commandButton value="Delete" action="#{patientsBean.delete}" rendered="#{patientsBean.buttonRender}" styleClass="button delete-button" />
+
+                    <h:commandButton value="Add" action="#{patientsBean.add}"  styleClass="button add-button"/>
+
+                </h:form>
+
+            
+                <h:form id="addPatient" rendered="#{patientsBean.addButtonClicked}">
+                    <h3>Add Patient</h3>
+                    First Name:
+                    <h:inputText id="add1" value="#{patietnsBean.newPatient.firstname}" styleClass="input" 
+                                 required="true"
+                                 requiredMessage="First Name can not be empty!" 
+                                 validatorMessage="First Name must contain only letters!">
+                        <f:validateRegex pattern="[A-Za-z]+" />
+                    </h:inputText>
+                    <br/>
+                    <h:message for="add1" styleClass="errorMessage" />
+                    <br/>
+
+                    Appointment Time:
+                    <h:inputText id="add2" value="#{appointmentsBean.newAppointment.appointmentTime}" styleClass="input" 
+                                 required="true"
+                                 requiredMessage="Appointment Time can not be empty!"
+                                 pt:placeholder="HH:mm" 
+                                 validatorMessage="Appointment Time must follow the format HH:mm!">
+                        <f:convertDateTime pattern="HH:mm" />
+                    </h:inputText>
+                    <br/>
+                    <h:message for="add2" styleClass="errorMessage" />
+                    <br/>
+
+                    Patient First Name:
+                    <h:inputText id="add3" value="#{appointmentsBean.newAppointmentPatientFirstname}" styleClass="input" 
+                                 required="true"
+                                 requiredMessage="Patient Firstname can not be empty!"
+                                 validatorMessage="First Name must be between 2 and 30 alphabetic characters!">
+                        <f:validateRegex pattern="^[A-Za-z]{2,30}$" />
+                    </h:inputText>
+                    <br/>
+                    <h:message for="add3" styleClass="errorMessage" />
+                    <br/>
+
+                    Patient Last Name:
+                    <h:inputText id="add4" value="#{appointmentsBean.newAppointmentPatientLastname}" styleClass="input" 
+                                 required="true"
+                                 requiredMessage="Patient Lastname can not be empty!"
+                                 validatorMessage="Last Name must be between 2 and 30 alphabetic characters!">
+                        <f:validateRegex pattern="^[A-Za-z]{2,30}$" />
+                    </h:inputText>
+                    <br/>
+                    <h:message for="add4" styleClass="errorMessage" />
+                    <br/>
+
+                    Patient Email:
+                    <h:inputText id="add5" value="#{appointmentsBean.newAppointmentPatientEmail}" styleClass="input" 
+                                 required="true"
+                                 requiredMessage="Patient Email can not be empty!"
+                                 validatorMessage="Invalid Email Format!">
+                        <f:validateRegex pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$" />
+                    </h:inputText>
+                    <br/>
+                    <h:message for="add5" styleClass="errorMessage" />
+                    <br/>
+
+                    Description:
+                    <h:inputText id="add6" value="#{appointmentsBean.newAppointment.reasonToVisit}" styleClass="input" 
+                                 required="true"
+                                 requiredMessage="Reason To Visit can not be empty!"
+                                 validatorMessage="Description no longer than 255 characters!" >
+                        <f:validateRegex pattern="^[A-Za-z0-9.,!? ]{5,255}$"/>
+                    </h:inputText>
+                    <br/>
+                    <h:message for="add6" styleClass="errorMessage" />
+                    <br/>
+                    <br/>
+                    <!--save button for add-->
+
+                    <h:commandButton value="Save" action="#{appointmentsBean.addFunction}" styleClass="button save-button"/>
+
+                    <h:commandButton value="Cancel" action="#{appointmentsBean.cancelAdd}" styleClass="button cancel-button"
+                                     immediate="true" />
+
+                    <br/> 
+                    <h:messages globalOnly="true" styleClass="errorMessage" />
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

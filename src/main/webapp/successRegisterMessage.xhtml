@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://xmlns.jcp.org/jsf/html"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      >
+    <h:head>
+        <title>Register Successfully</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet library="css" name="styles.css" /> 
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    </h:head>
+    <h:body>
+        <h:form styleClass="successForm">
+        <div class="successRegisterContainer">
+            <div class="successRegisterContentTop">   
+               <div>
+                   <i class="fa-regular fa-check-circle icon"></i>
+               </div>
+               <h4>SUCCESS</h4>
+            </div>
+            <div class="successRegisterContentBottom">
+                <p class="successMessage">Congratulations, your account has been successfully created.</p>
+                <h:commandButton value="Login Now" action="#{loginRegistrationBean.goToLoginPage}" styleClass="loginButton successButton"/>
+            </div>
+        </div>
+        </h:form>
+    </h:body>
+</html>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://xmlns.jcp.org/jsf/html"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      >
+<h:head>
+        <title>Homepage</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet library="css" name="webpages.css" />
+        <!--remember to add font awesome to layout as well since that covers this page-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
+</h:head>
+<h:body>
+   
+    <ui:composition template="templates/layout.xhtml">
+ 
+      <ui:define name="content">
+          <h:form styleClass="welcomeForm">
+             <h2>
+              Welcome back, 
+              <i class="fas fa-user-doctor"></i>
+               Dr. 
+              <h:outputText value="#{homePageBean.loggedInDoctor.firstname} #{homePageBean.loggedInDoctor.lastname}"/>
+             </h2>
+          
+             <h:commandLink value="Log out" action="#{homePageBean.logout}" />
+           </h:form>
+          
+          <h2>Upcoming appointment</h2>
+          
+          <!--Upcoming appointment table-->
+          
+          <h:dataTable cellpadding="10" border="1" rowClasses="oddRows,evenRows" styleClass="homepageTable"
+                     id="dbresults" value="#{homePageBean.appointments}" var="appointment" 
+                     rendered="#{!homePageBean.emptyTableRender}">
+            <h:column>
+                <f:facet name="header">Appointment Date</f:facet>  
+                <h:outputText value="#{appointment.appointmentDate}">
+                     <f:convertDateTime pattern="EEE, yyyy-MM-dd" locale="en_GB" /> <!--by using en_GB, no period after day , ex: Tues. -> Tue -->
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header" >Appointment Time</f:facet>  
+                <h:outputText value="#{appointment.appointmentTime}" > <!--since appointmentTime is type TIME, so it use the time Of JVM, which is 5 hours different from the database-->
+                    <f:convertDateTime pattern="HH:mm" timeZone="EST"/>
+                </h:outputText>
+            </h:column>   
+            <h:column>
+                <f:facet name="header" >Patient First Name</f:facet>  
+                <h:outputText value="#{appointment.patientId.firstname}" /> 
+            </h:column>  
+            <h:column>
+                <f:facet name="header" >Patient Last Name</f:facet>  
+                <h:outputText value="#{appointment.patientId.lastname}" /> 
+            </h:column>  
+            <h:column>
+                <f:facet name="header" >Description</f:facet>  
+                <h:outputText value="#{appointment.reasonToVisit}" /> 
+                    
+            </h:column>  
+          </h:dataTable>
+          
+          <!--this render when there is no upcoming appointments-->
+          
+          <h:panelGroup class="freetimeImage" rendered="#{homePageBean.emptyTableRender}">
+            <h:graphicImage library="images" name="panda.jpg" styleClass="image2"/>
+          </h:panelGroup>
+          
+        <div class="homepageContainer">     
+          
+          <!--Form render todo list-->
+          <h:form styleClass="homepageForm1">
+            <h2>Today To-Do</h2>
+            <ul class="todo">
+                <ui:repeat value="#{homePageBean.todoList}" var="item" rendered="#{!homePageBean.emptyTodoListRender}">
+                    <li class="todoItem">
+                        <h:selectBooleanCheckbox value="#{item.isChecked}" styleClass="checkbox">
+                            <f:ajax listener="#{homePageBean.updateCheckedStateAtCheckbox(item)}" render="@form" /> <!--render = @form will cause that form contains that ajax to re render when the value of isChecked is changed, so that button will appear based on the value checked true-->
+                        </h:selectBooleanCheckbox>
+                        <h:outputText value="#{item.task}" />
+                    </li>
+                </ui:repeat>
+            </ul>
+            <br />
+        
+            <!--delete, update button initially hidden, except add-->
+            
+            <h:commandButton value="Update" action="#{homePageBean.update}" rendered="#{homePageBean.buttonRender}" styleClass="button" />
+            
+            <h:commandButton value="Delete" action="#{homePageBean.delete}" rendered="#{homePageBean.buttonRender}" styleClass="button delete-button" />
+            
+            <h:commandButton value="Add" action="#{homePageBean.add}"  styleClass="button add-button"/>
+             
+      
+            <br/> <br/><br/>
+            
+            <!--render when there is no todo item in todo list-->
+            
+            <h:panelGroup class="freetimeImage" rendered="#{homePageBean.emptyTodoListRender}">
+                    <h:graphicImage library="images" name="panda.jpg" styleClass="image2"/>
+            </h:panelGroup>
+            
+          </h:form>
+          
+          <!--Form render when update button is clicked-->
+          
+          <h:form rendered="#{homePageBean.updateListRender}">
+              <h3>Update To-Do</h3>
+              <ul class="todo">
+                <ui:repeat value="#{homePageBean.updateTodoList}" var="item">
+                  <li class="todoItem">
+                     <h:inputText id="update" value="#{item.task}" styleClass="input" 
+                               required="true" 
+                               requiredMessage="Update To-Do Task can not be empty!"/>
+                     <br/>
+                     <h:message for="update" styleClass="errorMessage" />
+                  </li>
+                </ui:repeat>
+              </ul>
+              
+              <!--save button for update-->
+              
+              <h:commandButton value="Save" action="#{homePageBean.save}" styleClass="button save-button"/>
+              
+              <h:commandButton value="Cancel" action="#{homePageBean.cancelUpdate}" styleClass="button cancel-button"
+                               immediate="true" />
+          </h:form>
+          
+             
+          <!--Form render when add button is clicked-->
+          
+          <h:form id="addTodoForm" rendered="#{homePageBean.addButtonClicked}">
+              <h3>Adding To-Do</h3>
+              <h:inputText id="add" value="#{homePageBean.todoItem}" styleClass="input" 
+                           required="true"
+                           requiredMessage="To-Do Task can not be empty!"/>
+              <br/>
+              <h:message for="add" styleClass="errorMessage" />
+              <br/>
+              
+              <!--save button for add-->
+              
+              <h:commandButton value="Save" action="#{homePageBean.addFunction}" styleClass="button save-button"/>
+              
+              <h:commandButton value="Cancel" action="#{homePageBean.cancelAdd}" styleClass="button cancel-button"
+                               immediate="true" />
+          </h:form>
+              
+        </div>
+          
+      </ui:define>
+         
+    </ui:composition>
+    
+</h:body>
+</html>

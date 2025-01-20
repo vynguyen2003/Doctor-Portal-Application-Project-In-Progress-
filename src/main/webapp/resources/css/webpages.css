@@ -1,0 +1,193 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial;
+  padding: 10px;
+  background-color: white;
+  
+}
+
+
+header {
+  padding: 30px;
+  text-align: center;
+  background: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c);
+}
+
+header h1 {
+  font-size: 50px;
+  
+}
+
+/* Style the top navigation bar */
+nav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+/* Style the topnav links */
+nav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change color on hover */
+nav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.active 
+{
+  background-color: #f1f1f1;
+  color: black;   
+}
+
+footer {
+  padding: 20px;
+  text-align: center;
+  background: #ddd;
+  
+  background: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c);
+}
+
+.homepageTable {
+    border-collapse: collapse;
+}
+
+.oddRows {
+    background-color: #ebf8e1;
+}
+.evenRows {
+    background-color: aliceblue;
+}
+
+/*homepage*/
+.welcomeForm {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.homepageContainer {
+    display: flex;
+    
+}
+.homepageForm1{
+    margin-right: 50px;
+}
+.todo {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+.todoItem{
+    padding: 5px 0px 5px 0px;
+    font-size: 18px;
+}
+.checkbox{
+    transform: scale(1.5);
+    margin-right: 10px;
+}
+.input {
+    padding: 10px;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.button{
+    background: linear-gradient(to right, green, lightgreen);
+    color: white; 
+    padding: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 15px;
+    border: none;
+    margin-right: 10px;
+}
+
+.button:hover {
+    cursor: pointer;
+}
+
+.save-button{
+    background: none;
+    background-color: grey;
+    color: black;
+}
+.delete-button {
+    
+    background: linear-gradient(to right, red, lightcoral);
+}
+.add-button{
+    background: linear-gradient(to right, blue, lightskyblue);
+}
+.cancel-button{
+    background: none;
+    background-color: black;
+    color: white;
+    
+}
+
+section{
+    background-color: white;
+    padding: 20px 20px 40px 20px;
+}
+
+
+.freetimeImage {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 94vw;
+    margin: 50px 0px;
+}
+.image2{
+    max-width: 400px;
+    height: auto;
+}
+
+.errorMessage{
+    color: red;
+    font-size: 18px;
+}
+#addTodoForm{
+    margin-left: 20px;
+    
+}
+
+/* appointment page */
+.titleEachItemInUIIteration{
+    font-weight: bold !important;
+    font-size: 22px !important;
+    
+}
+.update3 {
+    margin-left: 54px;
+}
+.noAppointment{
+    font-size: 20px;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensures the wrapper takes the full height of the viewport */
+}
+.wrapper > section {
+    flex: 1; /* Pushes the footer to the bottom */
+}
+.sort-button{
+    background: none;
+    background-color: grey;
+    color: black;
+}
+.search {
+    margin-left: 10px;
+}

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://xmlns.jcp.org/jsf/html"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Registration</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet library="css" name="styles.css" /> 
+    </h:head>
+    <h:body styleClass="bodyRegister">
+        <h:panelGroup layout="block">
+            
+            <h:form id="formId" styleClass="formContainer formContainerRegister">
+                <div class="formContent formContentRegister">
+                   <div class="intro">
+                        <h2 class="title">TheDoctorPortal</h2>
+                        <p class="subtitle">Empowering Doctors, Simplifying Care</p>
+                   </div>
+                   
+                   <h:outputLabel for="firstname" value="First Name:" />
+                   <h:inputText id="firstname" value="#{loginRegistrationBean.doctor.firstname}" required="true" 
+                                requiredMessage="Firstname is required!"
+                                validatorMessage="Invalid Firstname Format!">
+                       <f:validateRegex pattern="^[A-Za-z]+$"/>
+                   </h:inputText>
+                   <h:message for="firstname" styleClass="errorMessage" />
+                      
+                   <br/><br/>
+                   <h:outputLabel for="lastname" value="Last Name:" />
+                   <h:inputText id="lastname" value="#{loginRegistrationBean.doctor.lastname}" required="true" 
+                                  requiredMessage="Lastname is required!"
+                                  validatorMessage="Invalid Lastname Format!">
+                       <f:validateRegex pattern="^[A-Za-z]+$" />
+                   </h:inputText>
+                   <h:message for="lastname" styleClass="errorMessage" />
+                   
+                   <br/><br/>
+                   <h:outputLabel for="email" value="Email:" />
+                   <h:inputText id="email" value="#{loginRegistrationBean.doctor.email}" required="true" 
+                                requiredMessage="Email is required!"
+                                validatorMessage="Invalid Email Format!">
+                       <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"/>
+                   </h:inputText>
+                   <h:message for="email" styleClass="errorMessage" />
+                   
+                   <br/><br/>
+                   <h:outputLabel for="password" value="Password:" />
+                   <h:inputText id="password" value="#{loginRegistrationBean.doctor.password}" required="true"
+                               
+                                requiredMessage="Password is required!"
+                                validatorMessage="Password must have 8+ characters containing a capital letter, and a symbol.">
+                       <f:validateRegex pattern="^(?=.*[A-Z])(?=.*[@$!%*?&amp;])[A-Za-z\d@$!%*?&amp;]{8,}$"/>
+                       <f:ajax execute="@this" /><!--needed to update the set value of password first before waiting all validations passes-->
+                   </h:inputText>
+                   <h:message for="password" styleClass="errorMessage" />
+                   
+                   <br/><br/>
+                   <h:outputLabel for="retypePass" value="Retype Password:" />
+                   <h:inputText id="retypePass" value="#{loginRegistrationBean.reTypeRegisterPassword}" required="true" 
+                                requiredMessage="Retype Password is required!"
+                                validator="#{loginRegistrationBean.validatePasswordRegister}"/>
+                   <h:message for="retypePass" styleClass="errorMessage" />
+                    
+                   <br/><br/>
+                   <h:outputLabel for="specialty" value="Specialty:" />
+                   <h:selectOneMenu id="specialty" value="#{loginRegistrationBean.doctor.specialty}" required="true" 
+                                    requiredMessage="Specialty is required!"
+                                    styleClass="specialty">
+                       <f:selectItem itemValue="" itemLabel="-- Select Specialty --" />
+                       <f:selectItem itemValue="Cardiology" itemLabel="Cardiology" />
+                       <f:selectItem itemValue="Neurology" itemLabel="Neurology" />
+                       <f:selectItem itemValue="Pediatrics" itemLabel="Pediatrics" />
+                       <f:selectItem itemValue="Dermatology" itemLabel="Dermatology" />
+                       <f:selectItem itemValue="General" itemLabel="General" />
+                       <f:selectItem itemValue="Oncology" itemLabel="Oncology" />
+                       <f:selectItem itemValue="Radiology" itemLabel="Radiology" />
+                   </h:selectOneMenu>
+                   <h:message for="specialty" styleClass="errorMessage" />
+                   
+                   <br/><br/>
+                   <h:outputLabel for="contactNumber" value="Contact Number:" />
+                   <h:inputText id="contactNumber" value="#{loginRegistrationBean.doctor.contactNumber}" required="true"
+                                requiredMessage="Contact number is required!"
+                                validatorMessage="Invalid contact number format (xxx-xxx-xxxx).">
+                       <f:validateRegex pattern="^\d{3}-\d{3}-\d{4}$" />
+                   </h:inputText>
+                   <h:message for="contactNumber" styleClass="errorMessage" />
+
+                   
+                   <br/><br/>
+                   <h:commandButton id="register" action="#{loginRegistrationBean.register}" value="Sign Up" styleClass="loginButton"/>
+                   <p>
+                       Already have an account? 
+                       <h:commandLink value="Login" action="#{loginRegistrationBean.goToLoginPage}" immediate="true" />  <!--use immediate = true to skip validation since commandlink triggers to submit the form-->
+                   </p>
+                 
+                </div>
+                
+                
+            </h:form>
+
+        </h:panelGroup>
+        <!--<div>Hello registration page</div>
+        <h:dataTable cellpadding="10" border="1" rowClasses="oddRows,evenRows" 
+                     id="dbresults" value="#{loginRegistrationBean.doctors}" var="doctor">
+            <h:column>
+                <f:facet name="header" >ID</f:facet>  
+                <h:outputText value="#{doctor.doctorId}" /> 
+            </h:column>
+            <h:column>
+                <f:facet name="header" >First name</f:facet>  
+                <h:outputText value="#{doctor.firstname}" />
+            </h:column>         
+            <h:column>
+                <f:facet name="header" >Last name</f:facet>  
+                <h:outputText value="#{doctor.lastname}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header" >Email</f:facet>  
+                <h:outputText value="#{doctor.email}" />  
+            </h:column>
+            <h:column>
+                <f:facet name="header" >Password</f:facet>  
+                <h:outputText value="#{doctor.password}" />  
+            </h:column>  
+            <h:column>
+                <f:facet name="header" >Specialty</f:facet>  
+                <h:outputText value="#{doctor.specialty}" />  
+            </h:column> 
+            <h:column>
+                <f:facet name="header" >Contact Number</f:facet>  
+                <h:outputText value="#{doctor.contactNumber}" />  
+            </h:column> 
+        </h:dataTable>-->
+    </h:body>
+</html>
